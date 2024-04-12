@@ -1,7 +1,7 @@
 import os
 import logging
 from datetime import datetime
-from src.MLProjectTemplate.constants import PROJECT_ROOT
+from src.INRCoinSense.constants import PROJECT_ROOT
 
 
 LOG_FILE = f"{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}.log"
