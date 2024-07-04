@@ -1,7 +1,12 @@
 numpy
 pandas
+
 matplotlib
 seaborn
+
 mlflow
 dvc
 dagshub
+
+jupyter
+ipykernel
