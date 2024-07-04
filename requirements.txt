@@ -4,6 +4,11 @@ pandas
 matplotlib
 seaborn
 
+python-box
+ensure
+pyYAML
+joblib
+
 mlflow
 dvc
 dagshub
