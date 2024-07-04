@@ -1,0 +1,8 @@
+root:
+  artifact: artifacts
+
+data_ingestion:
+  root_dir: artifacts/data_ingestion
+  remote_path: INRCoinSense.v4-c1-c2-c5-c5-c20-140424.yolov5pytorch.zip
+  local_path: artifacts/data_ingestion/INRCoinSenseDataset.zip
+  unzip_dir: artifacts/data_ingestion/dataset
