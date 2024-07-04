@@ -4,8 +4,9 @@ from datetime import datetime
 from src.INRCoinSense.constants import PROJECT_ROOT
 
 
+TODAY = datetime.now().strftime('%Y-%m-%d')
 LOG_FILE = f"{datetime.now().strftime('%Y_%m_%d_%H_%M_%S')}.log"
-logs_path = os.path.join(PROJECT_ROOT, "logs")
+logs_path = os.path.join(PROJECT_ROOT, "logs", TODAY)
 os.makedirs(logs_path, exist_ok=True)
 
 LOG_FILE_PATH = os.path.join(logs_path, LOG_FILE)
