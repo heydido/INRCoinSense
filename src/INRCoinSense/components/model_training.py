@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import yaml
 
 from src.INRCoinSense.utils.common import read_yaml
@@ -46,24 +47,31 @@ class ModelTraining:
                 "img_size": self.config.img_size,
                 "batch_size": self.config.batch_size,
                 "epochs": self.config.epochs,
-                "weights": f"{self.config.model}.pt"
+                "data": f"../artifacts/data_ingestion/dataset/data.yaml",
+                "cfg": f"./models/custom_{self.config.model}.yaml",
+                "weights": f"{self.config.model}.pt",
+                "name": f"{self.config.model}_results",
+                "cache": True
             }
 
-            logging.info(f"Training model with parameters: {parameters}")
-
-            os.system(
-                f"""
-                cd yolov5/ && python train.py 
-                --img {self.config.img_size} 
-                --batch {self.config.batch_size} 
-                --epochs {self.config.epochs} 
-                --data {self.config.dataset_info} 
-                --cfg ./models/custom_{self.config.model}.yaml 
-                --weights {self.config.model}.pt
-                --name {self.config.model}_results 
-                --cache True"
-                """
+            logging.info(f"Training model with parameters: {json.dumps(parameters, indent=4)}")
+            train_command = (
+                f"cd yolov5/ && python train.py "
+                f"--img {parameters['img_size']} "
+                f"--batch {parameters['batch_size']} "
+                f"--epochs {parameters['epochs']} "
+                f"--data {parameters['data']} "
+                f"--cfg {parameters['cfg']} "
+                f"--weights {parameters['weights']} "
+                f"--name {parameters['name']} "
+                f"--cache {parameters['cache']}"
             )
+
+            logging.info(f"Training command: {train_command}")
+
+            os.system(train_command)
+            os.system(f"cp -r yolov5/runs/train/{parameters['name']}/weights/* {self.config.trained_weights_dir}/")
+            os.system("rm -rf yolov5/runs")
 
         except Exception as e:
             logging.error(f"Error occurred while training model!")
