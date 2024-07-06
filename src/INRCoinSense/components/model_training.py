@@ -83,7 +83,7 @@ class ModelTraining:
                   f"--name {parameters['name']} "
                   f"--cache {parameters['cache']} "
                   f"--mlflow_runid {run_id}"
-              )
+                )
 
                 logging.info(f"Training command: {train_command}")
 
