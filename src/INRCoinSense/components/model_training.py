@@ -65,26 +65,27 @@ class ModelTraining:
             # Set the experiment name
             mlflow.set_experiment("custom_yolov5s")
 
-            train_command = (
-                f"cd yolov5/ && python train.py "
-                f"--img {parameters['img_size']} "
-                f"--batch {parameters['batch_size']} "
-                f"--epochs {parameters['epochs']} "
-                f"--data {parameters['data']} "
-                f"--cfg {parameters['cfg']} "
-                f"--weights {parameters['weights']} "
-                f"--name {parameters['name']} "
-                f"--cache {parameters['cache']}"
-            )
-
-            logging.info(f"Training command: {train_command}")
-
             with mlflow.start_run() as run:
                 # Remove older runs
                 os.system("rm -rf yolov5/runs")
 
-                # Log parameters
-                mlflow.log_params(parameters)
+                # Run Id
+                run_id = run.info.run_id
+
+                train_command = (
+                  f"cd yolov5/ && python train.py "
+                  f"--img {parameters['img_size']} "
+                  f"--batch {parameters['batch_size']} "
+                  f"--epochs {parameters['epochs']} "
+                  f"--data {parameters['data']} "
+                  f"--cfg {parameters['cfg']} "
+                  f"--weights {parameters['weights']} "
+                  f"--name {parameters['name']} "
+                  f"--cache {parameters['cache']} "
+                  f"--mlflow_runid {run_id}"
+              )
+
+                logging.info(f"Training command: {train_command}")
 
                 # Start training
                 os.system(train_command)
@@ -94,8 +95,7 @@ class ModelTraining:
                 mlflow.set_tracking_uri(remote_server_uri)
                 mlflow.log_artifacts("yolov5/runs/train")
 
-                # Copy trained weights to trained_weights directory and remove runs directory
-                os.system(f"cp -r yolov5/runs/train/{parameters['name']}/weights/* {self.config.trained_weights_dir}/")
+                # Remove runs directory
                 os.system("rm -rf yolov5/runs")
 
             mlflow.end_run()

@@ -25,6 +25,8 @@ from copy import deepcopy
 from datetime import datetime, timedelta
 from pathlib import Path
 
+import mlflow
+
 try:
     import comet_ml  # must be imported before torch (if installed)
 except ImportError:
@@ -129,10 +131,17 @@ def train(hyp, opt, device, callbacks):
     (w.parent if evolve else w).mkdir(parents=True, exist_ok=True)  # make dir
     last, best = w / "last.pt", w / "best.pt"
 
+    for opt_key in opt.__dict__:
+      opt_value = opt.__dict__[opt_key]
+      if opt_value is not None and opt_value != '':
+        mlflow.log_param(opt_key, opt_value)
+
     # Hyperparameters
     if isinstance(hyp, str):
         with open(hyp, errors="ignore") as f:
-            hyp = yaml.safe_load(f)  # load hyps dict
+          hyp = yaml.safe_load(f)  # load hyps dict
+          mlflow.log_params({f"hyper_{key}": hyp[key] for key in hyp})
+
     LOGGER.info(colorstr("hyperparameters: ") + ", ".join(f"{k}={v}" for k, v in hyp.items()))
     opt.hyp = hyp.copy()  # for saving hyps to checkpoints
 
@@ -449,6 +458,17 @@ def train(hyp, opt, device, callbacks):
             log_vals = list(mloss) + list(results) + lr
             callbacks.run("on_fit_epoch_end", log_vals, epoch, best_fitness, fi)
 
+            # mlflow
+            mlflow.log_metric("P", results[0], step=epoch)
+            mlflow.log_metric("R", results[1], step=epoch)
+            mlflow.log_metric("mAP.5", results[2], step=epoch)
+            mlflow.log_metric("mAP.5-.95", results[3], step=epoch)
+            mloss_cpu = mloss.cpu().numpy()
+            mlflow.log_metric("box", mloss_cpu[0], step=epoch)
+            mlflow.log_metric("obj", mloss_cpu[1], step=epoch)
+            mlflow.log_metric("cls", mloss_cpu[2], step=epoch)
+
+
             # Save model
             if (not nosave) or (final_epoch and not evolve):  # if save
                 ckpt = {
@@ -566,6 +586,9 @@ def parse_opt(known=False):
     parser.add_argument("--ndjson-console", action="store_true", help="Log ndjson to console")
     parser.add_argument("--ndjson-file", action="store_true", help="Log ndjson to file")
 
+    # MLFlow Run
+    parser.add_argument("--mlflow_runid", help="pass mlflow run id")
+
     return parser.parse_known_args()[0] if known else parser.parse_args()
 
 
@@ -624,6 +647,7 @@ def main(opt, callbacks=Callbacks()):
 
     # Train
     if not opt.evolve:
+      with mlflow.start_run(run_id=opt.mlflow_runid):
         train(opt.hyp, opt, device, callbacks)
 
     # Evolve hyperparameters (optional)
