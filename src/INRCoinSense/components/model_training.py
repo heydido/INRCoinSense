@@ -3,6 +3,9 @@ import sys
 import json
 import yaml
 
+import mlflow
+import dagshub
+
 from src.INRCoinSense.utils.common import read_yaml
 from src.INRCoinSense.entity.config_entity import ModelTrainingConfig
 from src.INRCoinSense.config.configuration import ConfigurationManager
@@ -55,6 +58,13 @@ class ModelTraining:
             }
 
             logging.info(f"Training model with parameters: {json.dumps(parameters, indent=4)}")
+
+            # Initialize DagsHub
+            dagshub.init("INRCoinSense", "heydido", mlflow=True)
+
+            # Set the experiment name
+            mlflow.set_experiment("custom_yolov5s")
+
             train_command = (
                 f"cd yolov5/ && python train.py "
                 f"--img {parameters['img_size']} "
@@ -69,9 +79,26 @@ class ModelTraining:
 
             logging.info(f"Training command: {train_command}")
 
-            os.system(train_command)
-            os.system(f"cp -r yolov5/runs/train/{parameters['name']}/weights/* {self.config.trained_weights_dir}/")
-            os.system("rm -rf yolov5/runs")
+            with mlflow.start_run() as run:
+                # Remove older runs
+                os.system("rm -rf yolov5/runs")
+
+                # Log parameters
+                mlflow.log_params(parameters)
+
+                # Start training
+                os.system(train_command)
+
+                # Log artifacts
+                remote_server_uri = "https://dagshub.com/heydido/INRCoinSense.mlflow"
+                mlflow.set_tracking_uri(remote_server_uri)
+                mlflow.log_artifacts("yolov5/runs/train")
+
+                # Copy trained weights to trained_weights directory and remove runs directory
+                os.system(f"cp -r yolov5/runs/train/{parameters['name']}/weights/* {self.config.trained_weights_dir}/")
+                os.system("rm -rf yolov5/runs")
+
+            mlflow.end_run()
 
         except Exception as e:
             logging.error(f"Error occurred while training model!")
