@@ -14,3 +14,13 @@ data_validation:
   datasets: ["train", "valid", "test"]
   data: ["images", "labels"]
   validation_status: artifacts/data_validation/validation_status.txt
+
+model_training:
+  root_dir: artifacts/model_training
+  dataset_dir: artifacts/data_ingestion/dataset
+  dataset_info: artifacts/data_ingestion/dataset/data.yaml
+  model: yolov5s
+  img_size: 640
+  batch_size: 16
+  epochs: 100
+  trained_weights_dir: artifacts/model_training/model
