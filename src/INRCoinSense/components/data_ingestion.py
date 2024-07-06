@@ -2,8 +2,6 @@ import os
 import sys
 import zipfile
 
-from pathlib import Path
-
 from src.INRCoinSense.utils.common import get_size
 from src.INRCoinSense.utils.dagshub_storage import DagsHubUtility
 from src.INRCoinSense.entity.config_entity import DataIngestionConfig
@@ -31,7 +29,7 @@ class DataIngestion:
                 logging.info(f"Zip file downloaded and saved as: {self.config.local_path}")
 
             else:
-                logging.info(f"Zip file already exists of size: {get_size(Path(self.config.local_path))}")
+                logging.info(f"Zip file already exists of size: {get_size(self.config.local_path)}")
 
         except Exception as e:
             logging.error(f"Error occurred while downloading data file!")
