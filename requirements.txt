@@ -16,3 +16,5 @@ jupyter
 ipykernel
 
 -r yolov5/requirements.txt
+
+-e .

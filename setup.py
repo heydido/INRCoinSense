@@ -6,6 +6,7 @@ with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
 HYPHEN_E_DOT = '-e .'
+YOLO_REQUIREMENTS = '-r yolov5/requirements.txt'
 
 SRC_REPO = "INRCoinSense"
 __version__ = "0.0.0"
@@ -24,6 +25,9 @@ def get_requirements(file_path: str) -> List[str]:
 
         if HYPHEN_E_DOT in requirements:
             requirements.remove(HYPHEN_E_DOT)
+        if YOLO_REQUIREMENTS in requirements:
+            requirements.remove(YOLO_REQUIREMENTS)
+
     return requirements
 
 
