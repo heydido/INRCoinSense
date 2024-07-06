@@ -58,16 +58,16 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
     Reads yaml file and returns ConfigBox type object
 
     Args:
-        path_to_yaml (str): path like input
+        path_to_yaml (Path): Path like input
 
     Raises:
         ValueError: if yaml file is empty
         e: empty file
 
     Returns:
-        ConfigBox: ConfigBox typ
+        ConfigBox: ConfigBox type
     """
-    with open(path_to_yaml) as yaml_file:
+    with open(str(path_to_yaml)) as yaml_file:
         content = yaml.safe_load(yaml_file)
         return ConfigBox(content)
 

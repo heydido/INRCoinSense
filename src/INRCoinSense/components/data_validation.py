@@ -40,7 +40,7 @@ class DataValidation:
             if not missing:
                 validated = True
                 logging.info("All datasets are present in the dataset directory!")
-                with open(self.config.validation_status, 'w') as f:
+                with open(str(self.config.validation_status), 'w') as f:
                     status = (
                         f"Data Validated Successfully at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} \n"
                         f"Validation Status: {validated}"
@@ -50,7 +50,7 @@ class DataValidation:
             else:
                 validated = False
                 logging.error(f"Some Datasets are missing in the dataset directory! Missing Datasets: {missing}")
-                with open(self.config.validation_status, 'w') as f:
+                with open(str(self.config.validation_status), 'w') as f:
                     status = (
                         f"Data Validation Failed at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} \n"
                         f"These datasets are missing: {missing} \n"

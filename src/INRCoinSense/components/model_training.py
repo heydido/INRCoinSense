@@ -26,7 +26,7 @@ class ModelTraining:
             names = dataset_info.names
             logging.info(f"Number of classes in the dataset: {num_classes}. Names: {names}")
 
-            with open(self.config.dataset_info, 'r') as f:
+            with open(str(self.config.dataset_info), 'r') as f:
                 dataset_info = yaml.safe_load(f)
             datasets = {
                 "train": f"../artifacts/data_ingestion/dataset/train/images",
@@ -35,7 +35,7 @@ class ModelTraining:
             }
             for dataset in datasets:
                 dataset_info[dataset] = datasets[dataset]
-            with open(self.config.dataset_info, 'w') as f:
+            with open(str(self.config.dataset_info), 'w') as f:
                 yaml.dump(dataset_info, f, indent=4)
 
             logging.info(f"Creating custom_{self.config.model} config file for training:")
