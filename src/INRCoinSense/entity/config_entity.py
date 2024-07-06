@@ -8,3 +8,13 @@ class DataIngestionConfig:
     remote_path: str
     local_path: Path
     unzip_dir: Path
+
+
+@dataclass(frozen=True)
+class DataValidationConfig:
+    root_dir: Path
+    dataset_dir: Path
+    dataset_info: Path
+    datasets: list[str]
+    data: list[str]
+    validation_status: Path

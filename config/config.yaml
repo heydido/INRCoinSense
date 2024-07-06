@@ -6,3 +6,11 @@ data_ingestion:
   remote_path: INRCoinSense.v4-c1-c2-c5-c5-c20-140424.yolov5pytorch.zip
   local_path: artifacts/data_ingestion/INRCoinSenseDataset.zip
   unzip_dir: artifacts/data_ingestion/dataset
+
+data_validation:
+  root_dir: artifacts/data_validation
+  dataset_dir: artifacts/data_ingestion/dataset
+  dataset_info: artifacts/data_ingestion/dataset/data.yaml
+  datasets: ["train", "valid", "test"]
+  data: ["images", "labels"]
+  validation_status: artifacts/data_validation/validation_status.txt
