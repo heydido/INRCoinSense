@@ -1,0 +1,147 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/INRCoinSense/pipeline/data_ingestion.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: a75bc804a45607b053fe306a0b8fcc12
+      size: 865
+    - path: src/INRCoinSense/pipeline/data_ingestion.py
+      hash: md5
+      md5: 8aa03801234efb225a5c65f7db24a9f6
+      size: 1037
+    outs:
+    - path: artifacts/data_ingestion/INRCoinSenseDataset.zip
+      hash: md5
+      md5: f0822a9a07b1aa88f9e76cd21a4de4db
+      size: 41609015
+    - path: artifacts/data_ingestion/dataset/data.yaml
+      hash: md5
+      md5: df37c1c49cf8b94566fdd43df1e27ab6
+      size: 258
+    - path: artifacts/data_ingestion/dataset/test/images/
+      hash: md5
+      md5: dddc69f94a7491026233c91eea174815.dir
+      size: 3863086
+      nfiles: 81
+    - path: artifacts/data_ingestion/dataset/test/labels/
+      hash: md5
+      md5: 6e686ffa7723bce30f20341927996307.dir
+      size: 4505
+      nfiles: 81
+    - path: artifacts/data_ingestion/dataset/train/images/
+      hash: md5
+      md5: 898f46fed1faced7ecf806cef08758b9.dir
+      size: 31025959
+      nfiles: 615
+    - path: artifacts/data_ingestion/dataset/train/labels/
+      hash: md5
+      md5: 69c095f317be9b88227525f39ea16a1f.dir
+      size: 33235
+      nfiles: 615
+    - path: artifacts/data_ingestion/dataset/valid/images/
+      hash: md5
+      md5: 91ee93a0469bb7f293aa5b0f26b4194f.dir
+      size: 6202587
+      nfiles: 124
+    - path: artifacts/data_ingestion/dataset/valid/labels/
+      hash: md5
+      md5: 4c1900984888a5a2f4d458f3380005fa.dir
+      size: 7423
+      nfiles: 124
+  data_validation:
+    cmd: python src/INRCoinSense/pipeline/data_validation.py
+    deps:
+    - path: artifacts/data_ingestion/dataset/data.yaml
+      hash: md5
+      md5: df37c1c49cf8b94566fdd43df1e27ab6
+      size: 258
+    - path: artifacts/data_ingestion/dataset/test/images/
+      hash: md5
+      md5: dddc69f94a7491026233c91eea174815.dir
+      size: 3863086
+      nfiles: 81
+    - path: artifacts/data_ingestion/dataset/test/labels/
+      hash: md5
+      md5: 6e686ffa7723bce30f20341927996307.dir
+      size: 4505
+      nfiles: 81
+    - path: artifacts/data_ingestion/dataset/train/images/
+      hash: md5
+      md5: 898f46fed1faced7ecf806cef08758b9.dir
+      size: 31025959
+      nfiles: 615
+    - path: artifacts/data_ingestion/dataset/train/labels/
+      hash: md5
+      md5: 69c095f317be9b88227525f39ea16a1f.dir
+      size: 33235
+      nfiles: 615
+    - path: artifacts/data_ingestion/dataset/valid/images/
+      hash: md5
+      md5: 91ee93a0469bb7f293aa5b0f26b4194f.dir
+      size: 6202587
+      nfiles: 124
+    - path: artifacts/data_ingestion/dataset/valid/labels/
+      hash: md5
+      md5: 4c1900984888a5a2f4d458f3380005fa.dir
+      size: 7423
+      nfiles: 124
+    - path: config/config.yaml
+      hash: md5
+      md5: a75bc804a45607b053fe306a0b8fcc12
+      size: 865
+    - path: src/INRCoinSense/pipeline/data_validation.py
+      hash: md5
+      md5: 1597ea5e3b04befee2c3f81c0471d9b3
+      size: 1034
+    outs:
+    - path: artifacts/data_validation/validation_status.txt
+      hash: md5
+      md5: 469afc78f90318c897480bd9515fa05d
+      size: 77
+  model_training:
+    cmd: python src/INRCoinSense/pipeline/model_training.py
+    deps:
+    - path: artifacts/data_ingestion/dataset/data.yaml
+      hash: md5
+      md5: 055eca878a7654593d67fba94f12c93a
+      size: 386
+    - path: artifacts/data_ingestion/dataset/train/images/
+      hash: md5
+      md5: 898f46fed1faced7ecf806cef08758b9.dir
+      size: 31025959
+      nfiles: 615
+    - path: artifacts/data_ingestion/dataset/train/labels/
+      hash: md5
+      md5: 69c095f317be9b88227525f39ea16a1f.dir
+      size: 33235
+      nfiles: 615
+    - path: artifacts/data_ingestion/dataset/valid/images/
+      hash: md5
+      md5: 91ee93a0469bb7f293aa5b0f26b4194f.dir
+      size: 6202587
+      nfiles: 124
+    - path: artifacts/data_ingestion/dataset/valid/labels/
+      hash: md5
+      md5: 4c1900984888a5a2f4d458f3380005fa.dir
+      size: 7423
+      nfiles: 124
+    - path: artifacts/data_validation/validation_status.txt
+      hash: md5
+      md5: 469afc78f90318c897480bd9515fa05d
+      size: 77
+    - path: config/config.yaml
+      hash: md5
+      md5: a75bc804a45607b053fe306a0b8fcc12
+      size: 865
+    - path: src/INRCoinSense/pipeline/model_training.py
+      hash: md5
+      md5: e45f995e4f51d0ca6b36d035a5586a22
+      size: 1017
+    outs:
+    - path: artifacts/model_training/model/
+      hash: md5
+      md5: 209b23e6ff5a0cef7a0cab8ea78f6d14.dir
+      size: 56724220
+      nfiles: 2

@@ -1,0 +1,44 @@
+stages:
+  data_ingestion:
+    cmd: python src/INRCoinSense/pipeline/data_ingestion.py
+    deps:
+      - src/INRCoinSense/pipeline/data_ingestion.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_ingestion/INRCoinSenseDataset.zip
+      - artifacts/data_ingestion/dataset/train/images/
+      - artifacts/data_ingestion/dataset/train/labels/
+      - artifacts/data_ingestion/dataset/test/images/
+      - artifacts/data_ingestion/dataset/test/labels/
+      - artifacts/data_ingestion/dataset/valid/images/
+      - artifacts/data_ingestion/dataset/valid/labels/
+      - artifacts/data_ingestion/dataset/data.yaml
+
+  data_validation:
+    cmd: python src/INRCoinSense/pipeline/data_validation.py
+    deps:
+      - src/INRCoinSense/pipeline/data_validation.py
+      - config/config.yaml
+      - artifacts/data_ingestion/dataset/train/images/
+      - artifacts/data_ingestion/dataset/train/labels/
+      - artifacts/data_ingestion/dataset/test/images/
+      - artifacts/data_ingestion/dataset/test/labels/
+      - artifacts/data_ingestion/dataset/valid/images/
+      - artifacts/data_ingestion/dataset/valid/labels/
+      - artifacts/data_ingestion/dataset/data.yaml
+    outs:
+      - artifacts/data_validation/validation_status.txt
+
+  model_training:
+    cmd: python src/INRCoinSense/pipeline/model_training.py
+    deps:
+      - artifacts/data_validation/validation_status.txt
+      - src/INRCoinSense/pipeline/model_training.py
+      - config/config.yaml
+      - artifacts/data_ingestion/dataset/train/images/
+      - artifacts/data_ingestion/dataset/train/labels/
+      - artifacts/data_ingestion/dataset/valid/images/
+      - artifacts/data_ingestion/dataset/valid/labels/
+      - artifacts/data_ingestion/dataset/data.yaml
+    outs:
+      - artifacts/model_training/model/
