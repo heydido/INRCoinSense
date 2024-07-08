@@ -28,6 +28,8 @@ enhanced with MLOps tools like DVC and MLFlow for efficient data versioning, exp
 ------------------------------------------------------------------------------------------------------------------------
 
 ## MLFlow Setup:
+Get these from the DAGsHub server.
+
 Commands to set up the MLFlow environment:
 1. MLFlow Tracking URI:
    ```
@@ -41,7 +43,10 @@ Commands to set up the MLFlow environment:
    ```
     export MLFLOW_TRACKING_PASSWORD=<********>
     ```
-Get these from the DAGsHub server.
+   
+![1](static/assets/img/mlflow_runs.png)
+
+MlFlow tracking server: [INRCoinSense](https://dagshub.com/heydido/INRCoinSense.mlflow)
 
 ------------------------------------------------------------------------------------------------------------------------
 
