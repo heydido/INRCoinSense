@@ -19,8 +19,8 @@ model_training:
   root_dir: artifacts/model_training
   dataset_dir: artifacts/data_ingestion/dataset
   dataset_info: artifacts/data_ingestion/dataset/data.yaml
-  model: yolov5s
+  model: yolov5m
   img_size: 640
-  batch_size: 16
-  epochs: 100
+  batch_size: 32
+  epochs: 200
   trained_weights_dir: artifacts/model_training/model

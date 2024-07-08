@@ -63,7 +63,7 @@ class ModelTraining:
             dagshub.init("INRCoinSense", "heydido", mlflow=True)
 
             # Set the experiment name
-            mlflow.set_experiment("custom_yolov5s")
+            mlflow.set_experiment(f"custom_{self.config.model}")
 
             with mlflow.start_run() as run:
                 # Remove older runs
